@@ -110,7 +110,7 @@ mod tests {
     #[tokio::test]
     /// This test has no assertion for now, but works.
     async fn test_generate_auth_token() {
-        let contents = fs::read_to_string("src/tests/test-client.json").unwrap();
+        let contents = fs::read_to_string("tests/test-client.json").unwrap();
         println!(
             "{}",
             generate_auth_token(
