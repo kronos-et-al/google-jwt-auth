@@ -6,6 +6,7 @@ use std::collections::HashMap;
 mod error;
 mod json_structs;
 
+
 // TODO unwarp() -> expect / error
 
 /// This function generates an jwt token with the provided information.
