@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 ///     "iat": 1697285052
 /// }
 /// ```
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Claims {
     pub iss: String,
     pub scope: String,
