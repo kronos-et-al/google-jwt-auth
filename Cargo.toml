@@ -5,7 +5,7 @@ version = "0.0.1"
 edition = "2021"
 license = "MIT"
 documentation = ""
-homepage = ""
+homepage = "https://github.com/kronos-et-al/google-jwt-auth"
 repository = "https://github.com/kronos-et-al/google-jwt-auth"
 readme = "README.md"
 
