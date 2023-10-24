@@ -12,14 +12,28 @@ use serde::{Deserialize, Serialize};
 /// ```
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Claims {
-    pub iss: String,
-    pub scope: String,
-    pub aud: String,
+    pub iss: &'static String,
+    pub scope: &'static String,
+    pub aud: &'static String,
     pub exp: i64,
     pub iat: i64,
 }
 
-/// Example for a valid `JsonWebToken`:
+impl Claims {
+    pub const fn new(iss: &String, scope: &String, aud: &String, lifetime: i64) -> Self {
+        let now = chrono::offset::Utc::now().timestamp();
+        let expire = now + lifetime;
+        Self {
+            iss,
+            scope,
+            aud,
+            exp: expire,
+            iat: now,
+        }
+    }
+}
+
+/// Example for a valid `ServiceAccountInfoJson`:
 /// ```json
 /// {
 ///     "type": "service_account",
@@ -35,9 +49,10 @@ pub struct Claims {
 ///     "universe_domain": "googleapis.com"
 /// }
 /// ```
-/// This JSON can be obtained in the google console service account section.
+/// This JSON can be downloaded in the google console service account section during the key generation.
+/// This JSON cannot be downloaded twice! A new key must be generated, if the file gets lost!
 #[derive(Serialize, Deserialize, Debug)]
-pub struct JsonWebToken {
+pub struct ServiceAccountInfoJson {
     pub project_id: String,
     pub private_key_id: String,
     pub private_key: String,
