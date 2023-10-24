@@ -1,4 +1,3 @@
-use serde_json::Number;
 use thiserror::Error;
 
 pub type Result<T> = std::result::Result<T, TokenGenerationError>;
@@ -11,21 +10,12 @@ pub enum TokenGenerationError {
     #[error("The provided lifetime '{0}' is out of range 30..3600.")]
     InvalidLifetime(i64),
     /// JsonWebToken library error
-    #[error("JsonWebTokenError occurred.")]
-    JsonWebTokenError {
-        #[from]
-        source: jsonwebtoken::errors::Error,
-    },
+    #[error("JsonWebTokenError occurred. {0}")]
+    JsonWebTokenError(#[from] jsonwebtoken::errors::Error),
     /// Reqwest library error
-    #[error("ReqwestError occurred.")]
-    ReqwestError {
-        #[from]
-        source: reqwest::Error,
-    },
+    #[error("ReqwestError occurred. {0}")]
+    ReqwestError(#[from] reqwest::Error),
     /// Serde library error
-    #[error("SerdeError occurred.")]
-    SerdeError {
-        #[from]
-        source: serde_json::Error,
-    },
+    #[error("SerdeError occurred. {0}")]
+    SerdeError(#[from] serde_json::Error),
 }
