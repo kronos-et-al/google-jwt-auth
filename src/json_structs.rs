@@ -10,17 +10,17 @@ use serde::{Deserialize, Serialize};
 ///     "iat": 1697285052
 /// }
 /// ```
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Debug, PartialEq)]
 pub struct Claims {
-    pub iss: &'static String,
-    pub scope: &'static String,
-    pub aud: &'static String,
+    pub iss: String,
+    pub scope: String,
+    pub aud: String,
     pub exp: i64,
     pub iat: i64,
 }
 
 impl Claims {
-    pub const fn new(iss: &String, scope: &String, aud: &String, lifetime: i64) -> Self {
+    pub fn new(iss: String, scope: String, aud: String, lifetime: i64) -> Claims {
         let now = chrono::offset::Utc::now().timestamp();
         let expire = now + lifetime;
         Self {

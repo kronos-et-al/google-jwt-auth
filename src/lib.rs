@@ -66,7 +66,12 @@ impl AuthConfig {
         // TODO add token buffer with lifetime check to minimize auth_token requests
         // <--
 
-        let claims = Claims::new(&self.iss, &self.scope, &self.aud, lifetime);
+        let claims = Claims::new(
+            self.iss.clone(),
+            self.scope.clone(),
+            self.aud.clone(),
+            lifetime,
+        );
         let assertion = self.sign(claims)?;
 
         let params = format!("grant_type={GRANT_TYPE}&assertion={assertion}");
@@ -82,12 +87,8 @@ impl AuthConfig {
     }
 
     fn sign(&self, claims: Claims) -> Result<String> {
-        let key = EncodingKey::from_rsa_pem(&self.private_key.as_bytes())?;
-        Ok(jsonwebtoken::encode::<Claims>(
-            &self.header,
-            &claims,
-            &key,
-        )?)
+        let key = EncodingKey::from_rsa_pem(self.private_key.as_bytes())?;
+        Ok(jsonwebtoken::encode::<Claims>(&self.header, &claims, &key)?)
     }
 }
 
@@ -110,7 +111,7 @@ mod tests {
         let contents = fs::read_to_string("tests/invalid-client.json").unwrap();
         let config = AuthConfig::build(
             contents,
-            String::from("https://www.googleapis.com/auth/cloud-vision")
+            String::from("https://www.googleapis.com/auth/cloud-vision"),
         );
         assert!(config.is_err());
     }
@@ -138,7 +139,7 @@ mod tests {
     fn get_valid_jwt() -> AuthConfig {
         AuthConfig::build(
             fs::read_to_string("tests/test-client.json").unwrap(),
-            String::from("https://www.googleapis.com/auth/cloud-vision")
+            String::from("https://www.googleapis.com/auth/cloud-vision"),
         )
         .unwrap()
     }
@@ -146,7 +147,7 @@ mod tests {
     fn get_valid_jwt_with_invalid_values() -> AuthConfig {
         AuthConfig::build(
             fs::read_to_string("tests/invalid-value-client.json").unwrap(),
-            String::from("https://www.googleapis.com/auth/cloud-vision")
+            String::from("https://www.googleapis.com/auth/cloud-vision"),
         )
         .unwrap()
     }
