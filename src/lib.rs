@@ -58,7 +58,7 @@ impl AuthConfig {
     /// See [`TokenGenerationError`] for a more detailed answer.
     /// # Returns
     /// The above mentioned auth_token as String.
-    pub async fn request_auth_token(&self, lifetime: i64) -> Result<String> {
+    pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
         if !(29..3601).contains(&lifetime) {
             return Err(InvalidLifetime(lifetime));
         }
@@ -101,7 +101,7 @@ mod tests {
     #[tokio::test]
     async fn test_generate_auth_token() {
         let config = get_valid_jwt();
-        let token = config.request_auth_token(3600).await;
+        let token = config.generate_auth_token(3600).await;
         assert!(token.is_ok());
         println!("{}", token.unwrap());
     }
