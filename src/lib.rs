@@ -4,13 +4,13 @@ use crate::json_structs::{Claims, GoogleBearerResponseJson, ServiceAccountInfoJs
 use crate::error::TokenGenerationError::InvalidLifetime;
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
 
-mod error;
-mod json_structs;
+pub mod error;
+pub mod json_structs;
 
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
-struct AuthConfig {
+pub struct AuthConfig {
     header: Header,
     iss: String,
     scope: String,
