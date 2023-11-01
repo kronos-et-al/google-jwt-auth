@@ -18,4 +18,7 @@ pub enum TokenGenerationError {
     /// Serde library error
     #[error("SerdeError occurred: {0}")]
     SerdeError(#[from] serde_json::Error),
+    /// The authentication service responded with an error
+    #[error("The authentication service returned an error:\nType: {0}, Message: {1}")]
+    AuthenticationError(String, String),
 }

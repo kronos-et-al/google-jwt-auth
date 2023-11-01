@@ -1,5 +1,5 @@
-use crate::error::Result;
-use crate::json_structs::{Claims, GoogleBearerResponseJson, ServiceAccountInfoJson};
+use crate::error::{Result, TokenGenerationError};
+use crate::json_structs::{Claims, GoogleResponse, ServiceAccountInfoJson};
 
 use crate::error::TokenGenerationError::InvalidLifetime;
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
@@ -81,9 +81,16 @@ impl AuthConfig {
             .body(params)
             .send()
             .await?
-            .json::<GoogleBearerResponseJson>()
+            .json::<GoogleResponse>()
             .await?;
-        Ok(resp.access_token)
+        match resp {
+            GoogleResponse::ValidResponse { access_token, .. } => {
+                Ok(access_token)
+            }
+            GoogleResponse::ErrorResponse { error, error_description, .. } => {
+                Err(TokenGenerationError::AuthenticationError(error, error_description))
+            }
+        }
     }
 
     fn sign(&self, claims: Claims) -> Result<String> {
@@ -94,7 +101,6 @@ impl AuthConfig {
 
 #[cfg(test)]
 mod tests {
-    #[ignore = "dead_code"]
     use super::*;
     use std::fs;
 
@@ -102,6 +108,7 @@ mod tests {
     async fn test_generate_auth_token() {
         let config = get_valid_jwt();
         let token = config.generate_auth_token(3600).await;
+        println!("{}", token.unwrap_err().to_string());
         assert!(token.is_ok());
         println!("{}", token.unwrap());
     }
@@ -116,22 +123,22 @@ mod tests {
         assert!(config.is_err());
     }
 
-    //#[tokio::test]
+    #[tokio::test]
     async fn test_invalid_usage() {
         todo!()
     }
 
-    //#[tokio::test]
+    #[tokio::test]
     async fn test_invalid_lifetime() {
         todo!()
     }
 
-    //#[tokio::test]
+    #[tokio::test]
     async fn test_invalid_client_info() {
         todo!()
     }
 
-    //#[tokio::test]
+    #[tokio::test]
     async fn test_invalid_client_key() {
         todo!()
     }

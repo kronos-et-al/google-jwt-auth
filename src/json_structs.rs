@@ -63,18 +63,39 @@ pub struct ServiceAccountInfoJson {
     pub client_x509_cert_url: String,
 }
 
-/// Example for a valid `GoogleBearerResponseJson`:
+/// Contains all possible response structures.
+/// See [`ValidResponse`] and [`ErrorResponse`] for more details.
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+pub enum GoogleResponse {
+    ValidResponse {access_token: String, expires_in: i16, token_type: String},
+    ErrorResponse {error: String, error_description: String}
+}
+
+/// Example for a valid `ValidResponse`:
 /// ```json
 ///{
 ///   "access_token": "VERY_LONG_ACCESS_TOKEN",
 ///   "expires_in": 3599,
 ///   "token_type": "Bearer"
-///
 ///}
 /// ```
 #[derive(Serialize, Deserialize, Debug)]
-pub struct GoogleBearerResponseJson {
-    pub access_token: String,
-    pub expires_in: i16,
-    pub token_type: String,
+pub struct ValidResponse {
+    access_token: String,
+    expires_in: i16,
+    token_type: String
+}
+
+/// Example for a valid `ErrorResponse`:
+/// ```json
+///{
+///   "error": "invalid_grant",
+///   "error_description": "Invalid JWT Signature."
+///}
+/// ```
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ErrorResponse {
+    error: String,
+    error_description: String
 }
