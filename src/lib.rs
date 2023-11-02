@@ -59,7 +59,7 @@ impl AuthConfig {
     /// # Returns
     /// The above mentioned auth_token as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
-        if !(29..3601).contains(&lifetime) {
+        if !(30..3601).contains(&lifetime) {
             return Err(InvalidLifetime(lifetime));
         }
 
@@ -106,18 +106,23 @@ mod tests {
 
     #[tokio::test]
     async fn test_generate_auth_token() {
-        let config = get_valid_jwt();
-        let token = config.generate_auth_token(3600).await;
-        println!("{}", token.unwrap_err().to_string());
-        assert!(token.is_ok());
-        println!("{}", token.unwrap());
+        let valid_config = get_valid_config_complete();
+
+        // The following config depends on an deleted service account key.
+        // It is no longer possible to create tokens with this info.
+        let invalid_config = AuthConfig::build(
+            fs::read_to_string("tests/test-client-old.json").unwrap(),
+            String::from("https://www.googleapis.com/auth/cloud-vision"),
+        ).unwrap();
+
+        assert!(valid_config.generate_auth_token(3600).await.is_ok());
+        assert!(invalid_config.generate_auth_token(3600).await.is_err());
     }
 
     #[tokio::test]
     async fn test_generate_auth_token_wrong_json() {
-        let contents = fs::read_to_string("tests/invalid-client.json").unwrap();
         let config = AuthConfig::build(
-            contents,
+            fs::read_to_string("tests/invalid-client.json").unwrap(),
             String::from("https://www.googleapis.com/auth/cloud-vision"),
         );
         assert!(config.is_err());
@@ -125,37 +130,31 @@ mod tests {
 
     #[tokio::test]
     async fn test_invalid_usage() {
-        todo!()
+        let invalid_usage_config = get_valid_config(String::from("invalid usage"));
+        let no_usage_config = get_valid_config(String::new());
+        assert!(invalid_usage_config.generate_auth_token(3600).await.is_err());
+        assert!(no_usage_config.generate_auth_token(3600).await.is_err());
     }
 
     #[tokio::test]
-    async fn test_invalid_lifetime() {
-        todo!()
+    async fn test_lifetime() {
+        let valid_config = get_valid_config_complete();
+        assert!(valid_config.generate_auth_token(3601).await.is_err());
+        assert!(valid_config.generate_auth_token(29).await.is_err());
+        assert!(valid_config.generate_auth_token(30).await.is_ok());
+        assert!(valid_config.generate_auth_token(250).await.is_ok());
+        assert!(valid_config.generate_auth_token(0).await.is_err());
+        assert!(valid_config.generate_auth_token(-10).await.is_err());
     }
 
-    #[tokio::test]
-    async fn test_invalid_client_info() {
-        todo!()
+    fn get_valid_config_complete() -> AuthConfig {
+        get_valid_config(String::from("https://www.googleapis.com/auth/cloud-vision"))
     }
 
-    #[tokio::test]
-    async fn test_invalid_client_key() {
-        todo!()
-    }
-
-    fn get_valid_jwt() -> AuthConfig {
+    fn get_valid_config(usage: String) -> AuthConfig {
         AuthConfig::build(
             fs::read_to_string("tests/test-client.json").unwrap(),
-            String::from("https://www.googleapis.com/auth/cloud-vision"),
-        )
-        .unwrap()
-    }
-
-    fn get_valid_jwt_with_invalid_values() -> AuthConfig {
-        AuthConfig::build(
-            fs::read_to_string("tests/invalid-value-client.json").unwrap(),
-            String::from("https://www.googleapis.com/auth/cloud-vision"),
-        )
-        .unwrap()
+            usage,
+        ).unwrap()
     }
 }

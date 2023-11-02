@@ -63,7 +63,7 @@ pub struct ServiceAccountInfoJson {
     pub client_x509_cert_url: String,
 }
 
-/// Contains all possible response structures.
+/// Contains all possible response structures for the google authentication service.
 /// See [`ValidResponse`] and [`ErrorResponse`] for more details.
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
