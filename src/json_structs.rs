@@ -68,8 +68,15 @@ pub struct ServiceAccountInfoJson {
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
 pub enum GoogleResponse {
-    ValidResponse {access_token: String, expires_in: i16, token_type: String},
-    ErrorResponse {error: String, error_description: String}
+    ValidResponse {
+        access_token: String,
+        expires_in: i16,
+        token_type: String,
+    },
+    ErrorResponse {
+        error: String,
+        error_description: String,
+    },
 }
 
 /// Example for a valid `ValidResponse`:
@@ -84,7 +91,7 @@ pub enum GoogleResponse {
 pub struct ValidResponse {
     access_token: String,
     expires_in: i16,
-    token_type: String
+    token_type: String,
 }
 
 /// Example for a valid `ErrorResponse`:
@@ -97,5 +104,5 @@ pub struct ValidResponse {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ErrorResponse {
     error: String,
-    error_description: String
+    error_description: String,
 }

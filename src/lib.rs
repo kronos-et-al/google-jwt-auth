@@ -84,12 +84,15 @@ impl AuthConfig {
             .json::<GoogleResponse>()
             .await?;
         match resp {
-            GoogleResponse::ValidResponse { access_token, .. } => {
-                Ok(access_token)
-            }
-            GoogleResponse::ErrorResponse { error, error_description, .. } => {
-                Err(TokenGenerationError::AuthenticationError(error, error_description))
-            }
+            GoogleResponse::ValidResponse { access_token, .. } => Ok(access_token),
+            GoogleResponse::ErrorResponse {
+                error,
+                error_description,
+                ..
+            } => Err(TokenGenerationError::AuthenticationError(
+                error,
+                error_description,
+            )),
         }
     }
 
@@ -113,7 +116,8 @@ mod tests {
         let invalid_config = AuthConfig::build(
             fs::read_to_string("tests/test-client-old.json").unwrap(),
             String::from("https://www.googleapis.com/auth/cloud-vision"),
-        ).unwrap();
+        )
+        .unwrap();
 
         assert!(valid_config.generate_auth_token(3600).await.is_ok());
         assert!(invalid_config.generate_auth_token(3600).await.is_err());
@@ -132,7 +136,10 @@ mod tests {
     async fn test_invalid_usage() {
         let invalid_usage_config = get_valid_config(String::from("invalid usage"));
         let no_usage_config = get_valid_config(String::new());
-        assert!(invalid_usage_config.generate_auth_token(3600).await.is_err());
+        assert!(invalid_usage_config
+            .generate_auth_token(3600)
+            .await
+            .is_err());
         assert!(no_usage_config.generate_auth_token(3600).await.is_err());
     }
 
@@ -152,9 +159,6 @@ mod tests {
     }
 
     fn get_valid_config(usage: String) -> AuthConfig {
-        AuthConfig::build(
-            fs::read_to_string("tests/test-client.json").unwrap(),
-            usage,
-        ).unwrap()
+        AuthConfig::build(fs::read_to_string("tests/test-client.json").unwrap(), usage).unwrap()
     }
 }
