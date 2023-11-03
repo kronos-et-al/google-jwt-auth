@@ -7,7 +7,7 @@ mod error;
 mod json_structs;
 pub mod usage;
 
-pub type ErrorKind = TokenGenerationError;
+pub type Error = TokenGenerationError;
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
@@ -61,7 +61,7 @@ impl AuthConfig {
     /// The above mentioned auth_token as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
         if !(30..3601).contains(&lifetime) {
-            return Err(ErrorKind::InvalidLifetime(lifetime));
+            return Err(Error::InvalidLifetime(lifetime));
         }
 
         // TODO add token buffer with lifetime check to minimize auth_token requests
@@ -90,7 +90,7 @@ impl AuthConfig {
                 error,
                 error_description,
                 ..
-            } => Err(ErrorKind::AuthenticationError(
+            } => Err(Error::AuthenticationError(
                 error,
                 error_description,
             )),
