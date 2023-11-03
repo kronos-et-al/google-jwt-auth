@@ -1,7 +1,6 @@
 use crate::error::{Result, TokenGenerationError};
 use crate::json_structs::{Claims, GoogleResponse, ServiceAccountInfoJson};
 
-use crate::error::TokenGenerationError::InvalidLifetime;
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
 
 mod error;
@@ -62,7 +61,7 @@ impl AuthConfig {
     /// The above mentioned auth_token as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
         if !(30..3601).contains(&lifetime) {
-            return Err(InvalidLifetime(lifetime));
+            return Err(ErrorKind::InvalidLifetime(lifetime));
         }
 
         // TODO add token buffer with lifetime check to minimize auth_token requests
