@@ -4,9 +4,11 @@ use crate::json_structs::{Claims, GoogleResponse, ServiceAccountInfoJson};
 use crate::error::TokenGenerationError::InvalidLifetime;
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
 
-pub mod error;
-pub mod json_structs;
+mod error;
+mod json_structs;
+pub mod usage;
 
+pub type ErrorKind = TokenGenerationError;
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
@@ -37,7 +39,7 @@ impl AuthConfig {
     /// This value should be between 30 and 3600 Seconds.
     /// Inputs out of this ranged will not be accepted.
     /// # Errors
-    /// See [`TokenGenerationError`] for a more detailed answer.
+    /// See [`ErrorKind`] for a more detailed answer.
     /// # Returns
     /// The above mentioned jwt as String.
     pub fn build(service_account_json_str: String, usage: String) -> Result<Self> {
@@ -55,7 +57,7 @@ impl AuthConfig {
     /// With the provided jwt token, an authentication token (short: auth_token) will be requested from google.
     /// This auth_token will be returned and is used for requesting several google api services.
     /// # Errors
-    /// See [`TokenGenerationError`] for a more detailed answer.
+    /// See [`ErrorKind`] for a more detailed answer.
     /// # Returns
     /// The above mentioned auth_token as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
@@ -89,7 +91,7 @@ impl AuthConfig {
                 error,
                 error_description,
                 ..
-            } => Err(TokenGenerationError::AuthenticationError(
+            } => Err(ErrorKind::AuthenticationError(
                 error,
                 error_description,
             )),
