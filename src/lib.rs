@@ -90,10 +90,7 @@ impl AuthConfig {
                 error,
                 error_description,
                 ..
-            } => Err(Error::AuthenticationError(
-                error,
-                error_description,
-            )),
+            } => Err(Error::AuthenticationError(error, error_description)),
         }
     }
 
