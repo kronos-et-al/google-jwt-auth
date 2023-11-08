@@ -2,12 +2,14 @@ use crate::error::{Result, TokenGenerationError};
 use crate::json_structs::{Claims, GoogleResponse, ServiceAccountInfoJson};
 
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
+use crate::usage::Usage;
 
 mod error;
 mod json_structs;
-pub mod usage;
+pub mod usage; // Todo is this accessibility setting right?
 
 pub type Error = TokenGenerationError;
+
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
@@ -28,10 +30,10 @@ impl AuthConfig {
     /// This json file cannot be downloaded twice! A new key must be generated, if the file gets lost!
     /// The content of this file needs to be provided by this param as string.
     ///
-    /// **usage: String**<br>
+    /// **usage: Usage**<br>
     /// Each google api request requires individual permissions to be executed.
     /// Beside the service account permission a usage or a scope should be provided.
-    /// See here for more information: URL.
+    /// See here for more information: [Google Scopes](https://developers.google.com/identity/protocols/oauth2/scopes?hl=en).
     ///
     /// **lifetime: u16**<br>
     /// An auth_token has a limited lifetime to am maximum of 3600 seconds.
@@ -41,13 +43,12 @@ impl AuthConfig {
     /// See [`ErrorKind`] for a more detailed answer.
     /// # Returns
     /// The above mentioned jwt as String.
-    pub fn build(service_account_json_str: String, usage: String) -> Result<Self> {
-        //Todo make usage to Custom(String)
+    pub fn build(service_account_json_str: String, usage: Usage) -> Result<Self> {
         let account_info: ServiceAccountInfoJson = serde_json::from_str(&service_account_json_str)?;
         Ok(Self {
             header: Header::new(Algorithm::RS256),
             iss: account_info.client_email,
-            scope: usage,
+            scope: usage.as_str(),
             aud: account_info.token_uri,
             private_key: account_info.private_key,
         })
@@ -113,7 +114,7 @@ mod tests {
         // It is no longer possible to create tokens with this info.
         let invalid_config = AuthConfig::build(
             fs::read_to_string("tests/test-client-old.json").unwrap(),
-            String::from("https://www.googleapis.com/auth/cloud-vision"),
+            Usage::CloudVision,
         )
         .unwrap();
 
@@ -125,15 +126,15 @@ mod tests {
     async fn test_generate_auth_token_wrong_json() {
         let config = AuthConfig::build(
             fs::read_to_string("tests/invalid-client.json").unwrap(),
-            String::from("https://www.googleapis.com/auth/cloud-vision"),
+            Usage::CloudVision,
         );
         assert!(config.is_err());
     }
 
     #[tokio::test]
     async fn test_invalid_usage() {
-        let invalid_usage_config = get_valid_config(String::from("invalid usage"));
-        let no_usage_config = get_valid_config(String::new());
+        let invalid_usage_config = get_valid_config(Usage::Custom(String::from("invalid usage")));
+        let no_usage_config = get_valid_config(Usage::Custom(String::new()));
         assert!(invalid_usage_config
             .generate_auth_token(3600)
             .await
@@ -153,10 +154,10 @@ mod tests {
     }
 
     fn get_valid_config_complete() -> AuthConfig {
-        get_valid_config(String::from("https://www.googleapis.com/auth/cloud-vision"))
+        get_valid_config(Usage::CloudVision)
     }
 
-    fn get_valid_config(usage: String) -> AuthConfig {
+    fn get_valid_config(usage: Usage) -> AuthConfig {
         AuthConfig::build(fs::read_to_string("tests/test-client.json").unwrap(), usage).unwrap()
     }
 }
