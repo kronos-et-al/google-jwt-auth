@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-pub type Result<T> = std::result::Result<T, TokenGenerationError>;
+pub(crate) type Result<T> = std::result::Result<T, TokenGenerationError>;
 
 /// This error contains all predictable types of failures
 /// that can occur during the token generation/signing and requesting.

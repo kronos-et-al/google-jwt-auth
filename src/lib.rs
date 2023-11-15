@@ -1,3 +1,16 @@
+#![forbid(unsafe_code)]
+#![warn(
+    missing_docs,
+    unreachable_pub,
+    unused_crate_dependencies,
+    clippy::pedantic,
+    clippy::nursery,
+    clippy::unwrap_used,
+    clippy::dbg_macro,
+    clippy::todo
+)]
+#![allow(clippy::module_name_repetitions)]
+
 //! Crate google-jwt-auth
 //!
 //! This crate provides the functionality to create authentication tokens for google requests.
@@ -33,11 +46,16 @@ mod error;
 mod json_structs;
 pub mod usage; // Todo is this accessibility setting right?
 
-pub type Error = TokenGenerationError;
+/// This module contains all error types and meanings.
+pub mod error;
+/// This module contains all library structs, that are used to create data requests.
+pub mod json_structs;
 
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
+/// This struct contains all necessary information to request an authentication token from google.
+/// This structure is intended to be reused by the client for several token generation requests.
 pub struct AuthConfig {
     header: Header,
     iss: String,
@@ -47,29 +65,29 @@ pub struct AuthConfig {
 }
 
 impl AuthConfig {
-    /// This function generates an auth configuration with the provided information. A this config is used to request auth_tokens.
+    /// This function generates an auth configuration with the provided information. A this config is used to request `auth_tokens`.
     /// This function generates only tokens with the RS256 encryption like the google jwt authentication service does.
     /// # Params
-    /// **service_account_json_str: String**<br>
+    /// **`service_account_json_str`: String**<br>
     /// Each google service account has a json file that can be downloaded in the google console during the key generation.
     /// This json file cannot be downloaded twice! A new key must be generated, if the file gets lost!
     /// The content of this file needs to be provided by this param as string.
     ///
-    /// **usage: Usage**<br>
+    /// **`usage`: String**<br>
     /// Each google api request requires individual permissions to be executed.
     /// Beside the service account permission a usage or a scope should be provided.
     /// See here for more information: [Google Scopes](https://developers.google.com/identity/protocols/oauth2/scopes?hl=en).
     ///
-    /// **lifetime: u16**<br>
-    /// An auth_token has a limited lifetime to am maximum of 3600 seconds.
+    /// **`lifetime`: u16**<br>
+    /// An `auth_token` has a limited lifetime to am maximum of 3600 seconds.
     /// This value should be between 30 and 3600 Seconds.
     /// Inputs out of this ranged will not be accepted.
     /// # Errors
     /// See [`ErrorKind`] for a more detailed answer.
     /// # Returns
     /// The above mentioned jwt as String.
-    pub fn build(service_account_json_str: String, usage: Usage) -> Result<Self> {
-        let account_info: ServiceAccountInfoJson = serde_json::from_str(&service_account_json_str)?;
+    pub fn build(service_account_json_str: &str, usage: Usage) -> Result<Self> {
+        let account_info: ServiceAccountInfoJson = serde_json::from_str(service_account_json_str)?;
         Ok(Self {
             header: Header::new(Algorithm::RS256),
             iss: account_info.client_email,
@@ -79,15 +97,15 @@ impl AuthConfig {
         })
     }
 
-    /// With the provided jwt token, an authentication token (short: auth_token) will be requested from google.
-    /// This auth_token will be returned and is used for requesting several google api services.
+    /// With the provided jwt token, an authentication token (short: `auth_token`) will be requested from google.
+    /// This `auth_token` will be returned and is used for requesting several google api services.
     /// # Errors
     /// See [`ErrorKind`] for a more detailed answer.
     /// # Returns
-    /// The above mentioned auth_token as String.
+    /// The above mentioned `auth_token` as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
-        if !(30..3601).contains(&lifetime) {
-            return Err(Error::InvalidLifetime(lifetime));
+        if !(30..=3600).contains(&lifetime) {
+            return Err(InvalidLifetime(lifetime));
         }
 
         // TODO add token buffer with lifetime check to minimize auth_token requests
@@ -99,7 +117,7 @@ impl AuthConfig {
             self.aud.clone(),
             lifetime,
         );
-        let assertion = self.sign(claims)?;
+        let assertion = self.sign(&claims)?;
 
         let params = format!("grant_type={GRANT_TYPE}&assertion={assertion}");
         let resp = reqwest::Client::new()
@@ -120,14 +138,15 @@ impl AuthConfig {
         }
     }
 
-    fn sign(&self, claims: Claims) -> Result<String> {
+    fn sign(&self, claims: &Claims) -> Result<String> {
         let key = EncodingKey::from_rsa_pem(self.private_key.as_bytes())?;
-        Ok(jsonwebtoken::encode::<Claims>(&self.header, &claims, &key)?)
+        Ok(jsonwebtoken::encode::<Claims>(&self.header, claims, &key)?)
     }
 }
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used)]
     use super::*;
     use std::fs;
 
@@ -182,7 +201,11 @@ mod tests {
         get_valid_config(Usage::CloudVision)
     }
 
-    fn get_valid_config(usage: Usage) -> AuthConfig {
-        AuthConfig::build(fs::read_to_string("tests/test-client.json").unwrap(), usage).unwrap()
+    fn get_valid_config(usage: String) -> AuthConfig {
+        AuthConfig::build(
+            &fs::read_to_string("tests/test-client.json").unwrap(),
+            usage,
+        )
+        .unwrap()
     }
 }
