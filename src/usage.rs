@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 pub enum Usage {
     /// For own purposes
     Custom(String),
@@ -551,8 +553,15 @@ pub enum Usage {
     Profile,
 }
 
+impl Display for Usage {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{url}", url = self.as_string())
+    }
+}
+
+
 impl Usage {
-    pub(crate) fn as_str(&self) -> String {
+    pub(crate) fn as_string(&self) -> String {
         match self {
             Usage::Custom(url) => url.clone(),
             Usage::CloudPlatform => String::from("https://www.googleapis.com/auth/cloud-platform"),
