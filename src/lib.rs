@@ -59,7 +59,7 @@ impl AuthConfig {
     /// # Returns
     /// The above mentioned auth_token as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
-        if !(30..3601).contains(&lifetime) {
+        if !(30..=3600).contains(&lifetime) {
             return Err(InvalidLifetime(lifetime));
         }
 
