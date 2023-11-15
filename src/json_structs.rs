@@ -10,7 +10,8 @@ use serde::{Deserialize, Serialize};
 ///     "iat": 1697285052
 /// }
 /// ```
-#[derive(Serialize, Debug, PartialEq)]
+#[allow(clippy::nursery)]
+#[derive(Serialize, Debug, PartialEq, Eq)]
 pub(crate) struct Claims {
     pub(crate) iss: String,
     pub(crate) scope: String,
@@ -51,6 +52,7 @@ impl Claims {
 /// ```
 /// This JSON can be downloaded in the google console service account section during the key generation.
 /// This JSON cannot be downloaded twice! A new key must be generated, if the file gets lost!
+#[allow(clippy::nursery)]
 #[derive(Serialize, Deserialize, Debug)]
 pub(crate) struct ServiceAccountInfoJson {
     pub(crate) project_id: String,
@@ -65,9 +67,10 @@ pub(crate) struct ServiceAccountInfoJson {
 
 /// Contains all possible response structures for the google authentication service.
 /// See [`ValidResponse`] and [`ErrorResponse`] for more details.
+#[allow(clippy::nursery)]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
-pub enum GoogleResponse {
+pub(crate) enum GoogleResponse {
     ///
     ValidResponse {
         // Todo merge with ValidResponse struct
@@ -97,7 +100,7 @@ pub enum GoogleResponse {
 ///}
 /// ```
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ValidResponse {
+struct ValidResponse {
     access_token: String,
     expires_in: i16,
     token_type: String,
@@ -111,7 +114,7 @@ pub struct ValidResponse {
 ///}
 /// ```
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ErrorResponse {
+struct ErrorResponse {
     error: String,
     error_description: String,
 }
