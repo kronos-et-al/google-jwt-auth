@@ -11,16 +11,16 @@ use serde::{Deserialize, Serialize};
 /// }
 /// ```
 #[derive(Serialize, Debug, PartialEq)]
-pub struct Claims {
-    pub iss: String,
-    pub scope: String,
-    pub aud: String,
-    pub exp: i64,
-    pub iat: i64,
+pub(crate) struct Claims {
+    pub(crate) iss: String,
+    pub(crate) scope: String,
+    pub(crate) aud: String,
+    pub(crate) exp: i64,
+    pub(crate) iat: i64,
 }
 
 impl Claims {
-    pub fn new(iss: String, scope: String, aud: String, lifetime: i64) -> Claims {
+    pub(crate) fn new(iss: String, scope: String, aud: String, lifetime: i64) -> Self {
         let now = chrono::offset::Utc::now().timestamp();
         let expire = now + lifetime;
         Self {
@@ -52,29 +52,66 @@ impl Claims {
 /// This JSON can be downloaded in the google console service account section during the key generation.
 /// This JSON cannot be downloaded twice! A new key must be generated, if the file gets lost!
 #[derive(Serialize, Deserialize, Debug)]
-pub struct ServiceAccountInfoJson {
-    pub project_id: String,
-    pub private_key_id: String,
-    pub private_key: String,
-    pub client_email: String,
-    pub client_id: String,
-    pub auth_uri: String,
-    pub token_uri: String,
-    pub client_x509_cert_url: String,
+pub(crate) struct ServiceAccountInfoJson {
+    pub(crate) project_id: String,
+    pub(crate) private_key_id: String,
+    pub(crate) private_key: String,
+    pub(crate) client_email: String,
+    pub(crate) client_id: String,
+    pub(crate) auth_uri: String,
+    pub(crate) token_uri: String,
+    pub(crate) client_x509_cert_url: String,
 }
 
-/// Example for a valid `GoogleBearerResponseJson`:
+/// Contains all possible response structures for the google authentication service.
+/// See [`ValidResponse`] and [`ErrorResponse`] for more details.
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+pub enum GoogleResponse {
+    ///
+    ValidResponse {
+        // Todo merge with ValidResponse struct
+        ///
+        access_token: String,
+        ///
+        expires_in: i16,
+        ///
+        token_type: String,
+    },
+    ///
+    ErrorResponse {
+        // Todo merge with ErrorResponse struct
+        ///
+        error: String,
+        ///
+        error_description: String,
+    },
+}
+
+/// Example for a valid `ValidResponse`:
 /// ```json
 ///{
 ///   "access_token": "VERY_LONG_ACCESS_TOKEN",
 ///   "expires_in": 3599,
 ///   "token_type": "Bearer"
-///
 ///}
 /// ```
 #[derive(Serialize, Deserialize, Debug)]
-pub struct GoogleBearerResponseJson {
-    pub access_token: String,
-    pub expires_in: i16,
-    pub token_type: String,
+pub struct ValidResponse {
+    access_token: String,
+    expires_in: i16,
+    token_type: String,
+}
+
+/// Example for a valid `ErrorResponse`:
+/// ```json
+///{
+///   "error": "invalid_grant",
+///   "error_description": "Invalid JWT Signature."
+///}
+/// ```
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ErrorResponse {
+    error: String,
+    error_description: String,
 }

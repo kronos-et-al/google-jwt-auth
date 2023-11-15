@@ -21,8 +21,8 @@ Each token request has a lifetime. This lifetime need to be provided as param in
 
 The next updates take care of the following:
 
-* [ ] Improved error messages
-* [ ] Detect error returns
+* [X] Improved error messages
+* [X] Detect error returns
 * [ ] Usage Enum Types
 * [ ] Token-Buffer (for now: every token generation results in a rest request)
 
@@ -30,11 +30,21 @@ The next updates take care of the following:
 
 ```rust
 ...
-let config = AuthConfig::build(                                     //<-- This config struct can be reused to generate tokens
-    fs::read_to_string("service_account.json").unwrap(),            //<-- JSON as String
+let config = AuthConfig::build(                                     //<-- Config can be reused
+    fs::read_to_string("service_account.json").unwrap(),            //<-- JSON as string
     String::from("https://www.googleapis.com/auth/cloud-vision"),   //<-- Api-Usage
 ).unwrap(); 
-let token = config.generate_auth_token(3600).await.unwrap();         //<-- Generate token
+let token = config.generate_auth_token(3600).await.unwrap();        //<-- Generate token
 println!("{}", token);
 ...
 ```
+
+## Errors
+
+This chapter should help to determine who/which causes the problem and how to fix it:
+
+| LibError            | Type          | Solution (not guaranteed)                                                                                                                           |
+|---------------------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| AuthenticationError | invalid_grant | Your service-client.json is no longer valid as the key got deleted in the google console. Replace this file with a new one by generating a new key. |
+
+This table is WIP and will change if new errors occur or someone requests a related issue.

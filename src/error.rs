@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-pub type Result<T> = std::result::Result<T, TokenGenerationError>;
+pub(crate) type Result<T> = std::result::Result<T, TokenGenerationError>;
 
 /// This error contains all predictable types of failures
 /// that can occur during the token generation/signing and requesting.
@@ -18,4 +18,7 @@ pub enum TokenGenerationError {
     /// Serde library error
     #[error("SerdeError occurred: {0}")]
     SerdeError(#[from] serde_json::Error),
+    /// The authentication service responded with an error
+    #[error("The authentication service returned an error:\nType: {0}, Message: {1}")]
+    AuthenticationError(String, String),
 }
