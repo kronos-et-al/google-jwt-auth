@@ -1,5 +1,7 @@
 use std::fmt::{Display, Formatter};
 
+/// This enum contains all usage types defined by google (late 2023).
+/// See [here](https://developers.google.com/identity/protocols/oauth2/scopes?hl=en) for more information.
 pub enum Usage {
     /// For own purposes
     Custom(String),
@@ -559,677 +561,669 @@ impl Display for Usage {
     }
 }
 
-
 impl Usage {
+    #![allow(clippy::too_many_lines)]
     pub(crate) fn as_string(&self) -> String {
         match self {
-            Usage::Custom(url) => url.clone(),
-            Usage::CloudPlatform => String::from("https://www.googleapis.com/auth/cloud-platform"),
-            Usage::CloudPlatformReadOnly => {
+            Self::Custom(url) => url.clone(),
+            Self::CloudPlatform => String::from("https://www.googleapis.com/auth/cloud-platform"),
+            Self::CloudPlatformReadOnly => {
                 String::from("https://www.googleapis.com/auth/cloud-platform.read-only")
             }
-            Usage::AdExchangeBuyer => {
+            Self::AdExchangeBuyer => {
                 String::from("https://www.googleapis.com/auth/adexchange.buyer")
             }
-            Usage::AdMobReadOnly => String::from("https://www.googleapis.com/auth/admob.readonly"),
-            Usage::AdMobReport => String::from("https://www.googleapis.com/auth/admob.report"),
-            Usage::AdSenseHost => String::from("https://www.googleapis.com/auth/adsensehost"),
-            Usage::AdminReportsAuditReadOnly => {
+            Self::AdMobReadOnly => String::from("https://www.googleapis.com/auth/admob.readonly"),
+            Self::AdMobReport => String::from("https://www.googleapis.com/auth/admob.report"),
+            Self::AdSenseHost => String::from("https://www.googleapis.com/auth/adsensehost"),
+            Self::AdminReportsAuditReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.reports.audit.readonly")
             }
-            Usage::AdminReportsUsageReadOnly => {
+            Self::AdminReportsUsageReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.reports.usage.readonly")
             }
-            Usage::AdminDataTransfer => {
+            Self::AdminDataTransfer => {
                 String::from("https://www.googleapis.com/auth/admin.datatransfer")
             }
-            Usage::AdminDataTransferReadOnly => {
+            Self::AdminDataTransferReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.datatransfer.readonly")
             }
-            Usage::AdminChromePrinters => {
+            Self::AdminChromePrinters => {
                 String::from("https://www.googleapis.com/auth/admin.chrome.printers")
             }
-            Usage::AdminChromePrintersReadOnly => {
+            Self::AdminChromePrintersReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.chrome.printers.readonly")
             }
-            Usage::AdminDirectoryCustomer => {
+            Self::AdminDirectoryCustomer => {
                 String::from("https://www.googleapis.com/auth/admin.directory.customer")
             }
-            Usage::AdminDirectoryCustomerReadOnly => {
+            Self::AdminDirectoryCustomerReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.customer.readonly")
             }
-            Usage::AdminDirectoryDeviceChromeOS => {
+            Self::AdminDirectoryDeviceChromeOS => {
                 String::from("https://www.googleapis.com/auth/admin.directory.device.chromeos")
             }
-            Usage::AdminDirectoryDeviceChromeOSReadOnly => String::from(
+            Self::AdminDirectoryDeviceChromeOSReadOnly => String::from(
                 "https://www.googleapis.com/auth/admin.directory.device.chromeos.readonly",
             ),
-            Usage::AdminDirectoryDeviceMobile => {
+            Self::AdminDirectoryDeviceMobile => {
                 String::from("https://www.googleapis.com/auth/admin.directory.device.mobile")
             }
-            Usage::AdminDirectoryDeviceMobileAction => {
+            Self::AdminDirectoryDeviceMobileAction => {
                 String::from("https://www.googleapis.com/auth/admin.directory.device.mobile.action")
             }
-            Usage::AdminDirectoryDeviceMobileReadOnly => String::from(
+            Self::AdminDirectoryDeviceMobileReadOnly => String::from(
                 "https://www.googleapis.com/auth/admin.directory.device.mobile.readonly",
             ),
-            Usage::AdminDirectoryDomain => {
+            Self::AdminDirectoryDomain => {
                 String::from("https://www.googleapis.com/auth/admin.directory.domain")
             }
-            Usage::AdminDirectoryDomainReadOnly => {
+            Self::AdminDirectoryDomainReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.domain.readonly")
             }
-            Usage::AdminDirectoryGroup => {
+            Self::AdminDirectoryGroup => {
                 String::from("https://www.googleapis.com/auth/admin.directory.group")
             }
-            Usage::AdminDirectoryGroupMember => {
+            Self::AdminDirectoryGroupMember => {
                 String::from("https://www.googleapis.com/auth/admin.directory.group.member")
             }
-            Usage::AdminDirectoryGroupMemberReadOnly => String::from(
+            Self::AdminDirectoryGroupMemberReadOnly => String::from(
                 "https://www.googleapis.com/auth/admin.directory.group.member.readonly",
             ),
-            Usage::AdminDirectoryGroupReadOnly => {
+            Self::AdminDirectoryGroupReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.group.readonly")
             }
-            Usage::AdminDirectoryOrgUnit => {
+            Self::AdminDirectoryOrgUnit => {
                 String::from("https://www.googleapis.com/auth/admin.directory.orgunit")
             }
-            Usage::AdminDirectoryOrgUnitReadOnly => {
+            Self::AdminDirectoryOrgUnitReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.orgunit.readonly")
             }
-            Usage::AdminDirectoryResourceCalendar => {
+            Self::AdminDirectoryResourceCalendar => {
                 String::from("https://www.googleapis.com/auth/admin.directory.resource.calendar")
             }
-            Usage::AdminDirectoryResourceCalendarReadOnly => String::from(
+            Self::AdminDirectoryResourceCalendarReadOnly => String::from(
                 "https://www.googleapis.com/auth/admin.directory.resource.calendar.readonly",
             ),
-            Usage::AdminDirectoryRoleManagement => {
+            Self::AdminDirectoryRoleManagement => {
                 String::from("https://www.googleapis.com/auth/admin.directory.rolemanagement")
             }
-            Usage::AdminDirectoryRoleManagementReadOnly => String::from(
+            Self::AdminDirectoryRoleManagementReadOnly => String::from(
                 "https://www.googleapis.com/auth/admin.directory.rolemanagement.readonly",
             ),
-            Usage::AdminDirectoryUser => {
+            Self::AdminDirectoryUser => {
                 String::from("https://www.googleapis.com/auth/admin.directory.user")
             }
-            Usage::AdminDirectoryUserAlias => {
+            Self::AdminDirectoryUserAlias => {
                 String::from("https://www.googleapis.com/auth/admin.directory.user.alias")
             }
-            Usage::AdminDirectoryUserAliasReadOnly => {
+            Self::AdminDirectoryUserAliasReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.user.alias.readonly")
             }
-            Usage::AdminDirectoryUserReadOnly => {
+            Self::AdminDirectoryUserReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.user.readonly")
             }
-            Usage::AdminDirectoryUserSecurity => {
+            Self::AdminDirectoryUserSecurity => {
                 String::from("https://www.googleapis.com/auth/admin.directory.user.security")
             }
-            Usage::AdminDirectoryUserSchema => {
+            Self::AdminDirectoryUserSchema => {
                 String::from("https://www.googleapis.com/auth/admin.directory.userschema")
             }
-            Usage::AdminDirectoryUserSchemaReadOnly => {
+            Self::AdminDirectoryUserSchemaReadOnly => {
                 String::from("https://www.googleapis.com/auth/admin.directory.userschema.readonly")
             }
-            Usage::Analytics => String::from("https://www.googleapis.com/auth/analytics"),
-            Usage::AnalyticsReadOnly => {
+            Self::Analytics => String::from("https://www.googleapis.com/auth/analytics"),
+            Self::AnalyticsReadOnly => {
                 String::from("https://www.googleapis.com/auth/analytics.readonly")
             }
-            Usage::AndroidManagement => {
+            Self::AndroidManagement => {
                 String::from("https://www.googleapis.com/auth/androidmanagement")
             }
-            Usage::AppEngineAdmin => {
-                String::from("https://www.googleapis.com/auth/appengine.admin")
-            }
-            Usage::Mail => String::from("https://mail.google.com/"),
-            Usage::CalendarFeeds => String::from("https://www.google.com/calendar/feeds"),
-            Usage::M8Feeds => String::from("https://www.google.com/m8/feeds"),
-            Usage::Documents => String::from("https://www.googleapis.com/auth/documents"),
-            Usage::Drive => String::from("https://www.googleapis.com/auth/drive"),
-            Usage::Forms => String::from("https://www.googleapis.com/auth/forms"),
-            Usage::FormsCurrentOnly => {
+            Self::AppEngineAdmin => String::from("https://www.googleapis.com/auth/appengine.admin"),
+            Self::Mail => String::from("https://mail.google.com/"),
+            Self::CalendarFeeds => String::from("https://www.google.com/calendar/feeds"),
+            Self::M8Feeds => String::from("https://www.google.com/m8/feeds"),
+            Self::Documents => String::from("https://www.googleapis.com/auth/documents"),
+            Self::Drive => String::from("https://www.googleapis.com/auth/drive"),
+            Self::Forms => String::from("https://www.googleapis.com/auth/forms"),
+            Self::FormsCurrentOnly => {
                 String::from("https://www.googleapis.com/auth/forms.currentonly")
             }
-            Usage::Groups => String::from("https://www.googleapis.com/auth/groups"),
-            Usage::ScriptDeployments => {
+            Self::Groups => String::from("https://www.googleapis.com/auth/groups"),
+            Self::ScriptDeployments => {
                 String::from("https://www.googleapis.com/auth/script.deployments")
             }
-            Usage::ScriptDeploymentsReadOnly => {
+            Self::ScriptDeploymentsReadOnly => {
                 String::from("https://www.googleapis.com/auth/script.deployments.readonly")
             }
-            Usage::ScriptMetrics => String::from("https://www.googleapis.com/auth/script.metrics"),
-            Usage::ScriptProcesses => {
+            Self::ScriptMetrics => String::from("https://www.googleapis.com/auth/script.metrics"),
+            Self::ScriptProcesses => {
                 String::from("https://www.googleapis.com/auth/script.processes")
             }
-            Usage::ScriptProjects => {
-                String::from("https://www.googleapis.com/auth/script.projects")
-            }
-            Usage::ScriptProjectsReadOnly => {
+            Self::ScriptProjects => String::from("https://www.googleapis.com/auth/script.projects"),
+            Self::ScriptProjectsReadOnly => {
                 String::from("https://www.googleapis.com/auth/script.projects.readonly")
             }
-            Usage::Spreadsheets => String::from("https://www.googleapis.com/auth/spreadsheets"),
-            Usage::UserInfoEmail => String::from("https://www.googleapis.com/auth/userinfo.email"),
-            Usage::BigQuery => String::from("https://www.googleapis.com/auth/bigquery"),
-            Usage::BigQueryInsertData => {
+            Self::Spreadsheets => String::from("https://www.googleapis.com/auth/spreadsheets"),
+            Self::UserInfoEmail => String::from("https://www.googleapis.com/auth/userinfo.email"),
+            Self::BigQuery => String::from("https://www.googleapis.com/auth/bigquery"),
+            Self::BigQueryInsertData => {
                 String::from("https://www.googleapis.com/auth/bigquery.insertdata")
             }
-            Usage::DevStorageFullControl => {
+            Self::DevStorageFullControl => {
                 String::from("https://www.googleapis.com/auth/devstorage.full_control")
             }
-            Usage::DevStorageReadOnly => {
+            Self::DevStorageReadOnly => {
                 String::from("https://www.googleapis.com/auth/devstorage.read_only")
             }
-            Usage::DevStorageReadWrite => {
+            Self::DevStorageReadWrite => {
                 String::from("https://www.googleapis.com/auth/devstorage.read_write")
             }
-            Usage::Blogger => String::from("https://www.googleapis.com/auth/blogger"),
-            Usage::BloggerReadOnly => {
+            Self::Blogger => String::from("https://www.googleapis.com/auth/blogger"),
+            Self::BloggerReadOnly => {
                 String::from("https://www.googleapis.com/auth/blogger.readonly")
             }
-            Usage::Books => String::from("https://www.googleapis.com/auth/books"),
-            Usage::Calendar => String::from("https://www.googleapis.com/auth/calendar"),
-            Usage::CalendarEvents => {
-                String::from("https://www.googleapis.com/auth/calendar.events")
-            }
-            Usage::CalendarEventsReadOnly => {
+            Self::Books => String::from("https://www.googleapis.com/auth/books"),
+            Self::Calendar => String::from("https://www.googleapis.com/auth/calendar"),
+            Self::CalendarEvents => String::from("https://www.googleapis.com/auth/calendar.events"),
+            Self::CalendarEventsReadOnly => {
                 String::from("https://www.googleapis.com/auth/calendar.events.readonly")
             }
-            Usage::CalendarReadOnly => {
+            Self::CalendarReadOnly => {
                 String::from("https://www.googleapis.com/auth/calendar.readonly")
             }
-            Usage::CalendarSettingsReadOnly => {
+            Self::CalendarSettingsReadOnly => {
                 String::from("https://www.googleapis.com/auth/calendar.settings.readonly")
             }
-            Usage::DdmConversions => String::from("https://www.googleapis.com/auth/ddmconversions"),
-            Usage::DfaReporting => String::from("https://www.googleapis.com/auth/dfareporting"),
-            Usage::DfaTrafficking => String::from("https://www.googleapis.com/auth/dfatrafficking"),
-            Usage::BigTableAdmin => String::from("https://www.googleapis.com/auth/bigtable.admin"),
-            Usage::BigTableAdminCluster => {
+            Self::DdmConversions => String::from("https://www.googleapis.com/auth/ddmconversions"),
+            Self::DfaReporting => String::from("https://www.googleapis.com/auth/dfareporting"),
+            Self::DfaTrafficking => String::from("https://www.googleapis.com/auth/dfatrafficking"),
+            Self::BigTableAdmin => String::from("https://www.googleapis.com/auth/bigtable.admin"),
+            Self::BigTableAdminCluster => {
                 String::from("https://www.googleapis.com/auth/bigtable.admin.cluster")
             }
-            Usage::BigTableAdminInstance => {
+            Self::BigTableAdminInstance => {
                 String::from("https://www.googleapis.com/auth/bigtable.admin.instance")
             }
-            Usage::BigTableAdminTable => {
+            Self::BigTableAdminTable => {
                 String::from("https://www.googleapis.com/auth/bigtable.admin.table")
             }
-            Usage::CloudBigTableAdmin => {
+            Self::CloudBigTableAdmin => {
                 String::from("https://www.googleapis.com/auth/cloud-bigtable.admin")
             }
-            Usage::CloudBigTableAdminCluster => {
+            Self::CloudBigTableAdminCluster => {
                 String::from("https://www.googleapis.com/auth/cloud-bigtable.admin.cluster")
             }
-            Usage::CloudBigTableAdminTable => {
+            Self::CloudBigTableAdminTable => {
                 String::from("https://www.googleapis.com/auth/cloud-bigtable.admin.table")
             }
-            Usage::CloudBilling => String::from("https://www.googleapis.com/auth/cloud-billing"),
-            Usage::CloudBillingReadOnly => {
+            Self::CloudBilling => String::from("https://www.googleapis.com/auth/cloud-billing"),
+            Self::CloudBillingReadOnly => {
                 String::from("https://www.googleapis.com/auth/cloud-billing.readonly")
             }
-            Usage::NDevCloudDnsReadOnly => {
+            Self::NDevCloudDnsReadOnly => {
                 String::from("https://www.googleapis.com/auth/ndev.clouddns.readonly")
             }
-            Usage::NDevCloudDnsReadWrite => {
+            Self::NDevCloudDnsReadWrite => {
                 String::from("https://www.googleapis.com/auth/ndev.clouddns.readwrite")
             }
-            Usage::CloudDebugger => String::from("https://www.googleapis.com/auth/cloud_debugger"),
-            Usage::NDevCloudMan => String::from("https://www.googleapis.com/auth/ndev.cloudman"),
-            Usage::NDevCloudManReadOnly => {
+            Self::CloudDebugger => String::from("https://www.googleapis.com/auth/cloud_debugger"),
+            Self::NDevCloudMan => String::from("https://www.googleapis.com/auth/ndev.cloudman"),
+            Self::NDevCloudManReadOnly => {
                 String::from("https://www.googleapis.com/auth/ndev.cloudman.readonly")
             }
-            Usage::DataStore => String::from("https://www.googleapis.com/auth/datastore"),
-            Usage::CloudIdentityDevicesLookup => {
+            Self::DataStore => String::from("https://www.googleapis.com/auth/datastore"),
+            Self::CloudIdentityDevicesLookup => {
                 String::from("https://www.googleapis.com/auth/cloud-identity.devices.lookup")
             }
-            Usage::CloudIdentityGroups => {
+            Self::CloudIdentityGroups => {
                 String::from("https://www.googleapis.com/auth/cloud-identity.groups")
             }
-            Usage::CloudIdentityGroupsReadOnly => {
+            Self::CloudIdentityGroupsReadOnly => {
                 String::from("https://www.googleapis.com/auth/cloud-identity.groups.readonly")
             }
-            Usage::CloudKms => String::from("https://www.googleapis.com/auth/cloudkms"),
-            Usage::LoggingAdmin => String::from("https://www.googleapis.com/auth/logging.admin"),
-            Usage::LoggingRead => String::from("https://www.googleapis.com/auth/logging.read"),
-            Usage::LoggingWrite => String::from("https://www.googleapis.com/auth/logging.write"),
-            Usage::Monitoring => String::from("https://www.googleapis.com/auth/monitoring"),
-            Usage::MonitoringRead => {
-                String::from("https://www.googleapis.com/auth/monitoring.read")
-            }
-            Usage::MonitoringWrite => {
+            Self::CloudKms => String::from("https://www.googleapis.com/auth/cloudkms"),
+            Self::LoggingAdmin => String::from("https://www.googleapis.com/auth/logging.admin"),
+            Self::LoggingRead => String::from("https://www.googleapis.com/auth/logging.read"),
+            Self::LoggingWrite => String::from("https://www.googleapis.com/auth/logging.write"),
+            Self::Monitoring => String::from("https://www.googleapis.com/auth/monitoring"),
+            Self::MonitoringRead => String::from("https://www.googleapis.com/auth/monitoring.read"),
+            Self::MonitoringWrite => {
                 String::from("https://www.googleapis.com/auth/monitoring.write")
             }
-            Usage::CloudLanguage => String::from("https://www.googleapis.com/auth/cloud-language"),
-            Usage::Compute => String::from("https://www.googleapis.com/auth/compute"),
-            Usage::ComputeReadOnly => {
+            Self::CloudLanguage => String::from("https://www.googleapis.com/auth/cloud-language"),
+            Self::Compute => String::from("https://www.googleapis.com/auth/compute"),
+            Self::ComputeReadOnly => {
                 String::from("https://www.googleapis.com/auth/compute.readonly")
             }
-            Usage::PubSub => String::from("https://www.googleapis.com/auth/pubsub"),
-            Usage::CloudRuntimeConfig => {
+            Self::PubSub => String::from("https://www.googleapis.com/auth/pubsub"),
+            Self::CloudRuntimeConfig => {
                 String::from("https://www.googleapis.com/auth/cloudruntimeconfig")
             }
-            Usage::SqlServiceAdmin => {
+            Self::SqlServiceAdmin => {
                 String::from("https://www.googleapis.com/auth/sqlservice.admin")
             }
-            Usage::CloudSearch => String::from("https://www.googleapis.com/auth/cloud_search"),
-            Usage::CloudSearchDebug => {
+            Self::CloudSearch => String::from("https://www.googleapis.com/auth/cloud_search"),
+            Self::CloudSearchDebug => {
                 String::from("https://www.googleapis.com/auth/cloud_search.debug")
             }
-            Usage::CloudSearchIndexing => {
+            Self::CloudSearchIndexing => {
                 String::from("https://www.googleapis.com/auth/cloud_search.indexing")
             }
-            Usage::CloudSearchQuery => {
+            Self::CloudSearchQuery => {
                 String::from("https://www.googleapis.com/auth/cloud_search.query")
             }
-            Usage::CloudSearchSettings => {
+            Self::CloudSearchSettings => {
                 String::from("https://www.googleapis.com/auth/cloud_search.settings")
             }
-            Usage::CloudSearchSettingsIndexing => {
+            Self::CloudSearchSettingsIndexing => {
                 String::from("https://www.googleapis.com/auth/cloud_search.settings.indexing")
             }
-            Usage::CloudSearchSettingsQuery => {
+            Self::CloudSearchSettingsQuery => {
                 String::from("https://www.googleapis.com/auth/cloud_search.settings.query")
             }
-            Usage::CloudSearchStats => {
+            Self::CloudSearchStats => {
                 String::from("https://www.googleapis.com/auth/cloud_search.stats")
             }
-            Usage::CloudSearchStatsIndexing => {
+            Self::CloudSearchStatsIndexing => {
                 String::from("https://www.googleapis.com/auth/cloud_search.stats.indexing")
             }
-            Usage::SourceFullControl => {
+            Self::SourceFullControl => {
                 String::from("https://www.googleapis.com/auth/source.full_control")
             }
-            Usage::SourceReadOnly => {
+            Self::SourceReadOnly => {
                 String::from("https://www.googleapis.com/auth/source.read_only")
             }
-            Usage::SourceReadWrite => {
+            Self::SourceReadWrite => {
                 String::from("https://www.googleapis.com/auth/source.read_write")
             }
-            Usage::SpannerAdmin => String::from("https://www.googleapis.com/auth/spanner.admin"),
-            Usage::SpannerData => String::from("https://www.googleapis.com/auth/spanner.data"),
-            Usage::TraceAppend => String::from("https://www.googleapis.com/auth/trace.append"),
-            Usage::CloudTranslation => {
+            Self::SpannerAdmin => String::from("https://www.googleapis.com/auth/spanner.admin"),
+            Self::SpannerData => String::from("https://www.googleapis.com/auth/spanner.data"),
+            Self::TraceAppend => String::from("https://www.googleapis.com/auth/trace.append"),
+            Self::CloudTranslation => {
                 String::from("https://www.googleapis.com/auth/cloud-translation")
             }
-            Usage::CloudVision => String::from("https://www.googleapis.com/auth/cloud-vision"),
-            Usage::Content => String::from("https://www.googleapis.com/auth/content"),
-            Usage::DriveActivity => String::from("https://www.googleapis.com/auth/drive.activity"),
-            Usage::DriveActivityReadOnly => {
+            Self::CloudVision => String::from("https://www.googleapis.com/auth/cloud-vision"),
+            Self::Content => String::from("https://www.googleapis.com/auth/content"),
+            Self::DriveActivity => String::from("https://www.googleapis.com/auth/drive.activity"),
+            Self::DriveActivityReadOnly => {
                 String::from("https://www.googleapis.com/auth/drive.activity.readonly")
             }
-            Usage::AppsLicensing => String::from("https://www.googleapis.com/auth/apps.licensing"),
-            Usage::FirebaseMessaging => {
+            Self::AppsLicensing => String::from("https://www.googleapis.com/auth/apps.licensing"),
+            Self::FirebaseMessaging => {
                 String::from("https://www.googleapis.com/auth/firebase.messaging")
             }
-            Usage::Firebase => String::from("https://www.googleapis.com/auth/firebase"),
-            Usage::FirebaseReadOnly => {
+            Self::Firebase => String::from("https://www.googleapis.com/auth/firebase"),
+            Self::FirebaseReadOnly => {
                 String::from("https://www.googleapis.com/auth/firebase.readonly")
             }
-            Usage::FitnessActivityRead => {
+            Self::FitnessActivityRead => {
                 String::from("https://www.googleapis.com/auth/fitness.activity.read")
             }
-            Usage::FitnessActivityWrite => {
+            Self::FitnessActivityWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.activity.write")
             }
-            Usage::FitnessBloodGlucoseRead => {
+            Self::FitnessBloodGlucoseRead => {
                 String::from("https://www.googleapis.com/auth/fitness.blood_glucose.read")
             }
-            Usage::FitnessBloodGlucoseWrite => {
+            Self::FitnessBloodGlucoseWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.blood_glucose.write")
             }
-            Usage::FitnessBloodPressureRead => {
+            Self::FitnessBloodPressureRead => {
                 String::from("https://www.googleapis.com/auth/fitness.blood_pressure.read")
             }
-            Usage::FitnessBloodPressureWrite => {
+            Self::FitnessBloodPressureWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.blood_pressure.write")
             }
-            Usage::FitnessBodyRead => {
+            Self::FitnessBodyRead => {
                 String::from("https://www.googleapis.com/auth/fitness.body.read")
             }
-            Usage::FitnessBodyWrite => {
+            Self::FitnessBodyWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.body.write")
             }
-            Usage::FitnessBodyTemperatureRead => {
+            Self::FitnessBodyTemperatureRead => {
                 String::from("https://www.googleapis.com/auth/fitness.body_temperature.read")
             }
-            Usage::FitnessBodyTemperatureWrite => {
+            Self::FitnessBodyTemperatureWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.body_temperature.write")
             }
-            Usage::FitnessHeartRateRead => {
+            Self::FitnessHeartRateRead => {
                 String::from("https://www.googleapis.com/auth/fitness.heart_rate.read")
             }
-            Usage::FitnessHeartRateWrite => {
+            Self::FitnessHeartRateWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.heart_rate.write")
             }
-            Usage::FitnessLocationRead => {
+            Self::FitnessLocationRead => {
                 String::from("https://www.googleapis.com/auth/fitness.location.read")
             }
-            Usage::FitnessLocationWrite => {
+            Self::FitnessLocationWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.location.write")
             }
-            Usage::FitnessNutritionRead => {
+            Self::FitnessNutritionRead => {
                 String::from("https://www.googleapis.com/auth/fitness.nutrition.read")
             }
-            Usage::FitnessNutritionWrite => {
+            Self::FitnessNutritionWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.nutrition.write")
             }
-            Usage::FitnessOxygenSaturationRead => {
+            Self::FitnessOxygenSaturationRead => {
                 String::from("https://www.googleapis.com/auth/fitness.oxygen_saturation.read")
             }
-            Usage::FitnessOxygenSaturationWrite => {
+            Self::FitnessOxygenSaturationWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.oxygen_saturation.write")
             }
-            Usage::FitnessReproductiveHealthRead => {
+            Self::FitnessReproductiveHealthRead => {
                 String::from("https://www.googleapis.com/auth/fitness.reproductive_health.read")
             }
-            Usage::FitnessReproductiveHealthWrite => {
+            Self::FitnessReproductiveHealthWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.reproductive_health.write")
             }
-            Usage::FitnessSleepRead => {
+            Self::FitnessSleepRead => {
                 String::from("https://www.googleapis.com/auth/fitness.sleep.read")
             }
-            Usage::FitnessSleepWrite => {
+            Self::FitnessSleepWrite => {
                 String::from("https://www.googleapis.com/auth/fitness.sleep.write")
             }
-            Usage::Genomics => String::from("https://www.googleapis.com/auth/genomics"),
-            Usage::MailAddonsCurrentActionCompose => {
+            Self::Genomics => String::from("https://www.googleapis.com/auth/genomics"),
+            Self::MailAddonsCurrentActionCompose => {
                 String::from("https://www.googleapis.com/auth/gmail.addons.current.action.compose")
             }
-            Usage::MailAddonsCurrentMessageAction => {
+            Self::MailAddonsCurrentMessageAction => {
                 String::from("https://www.googleapis.com/auth/gmail.addons.current.message.action")
             }
-            Usage::MailAddonsCurrentMessageMetaData => String::from(
+            Self::MailAddonsCurrentMessageMetaData => String::from(
                 "https://www.googleapis.com/auth/gmail.addons.current.message.metadata",
             ),
-            Usage::MailAddonsCurrentMessageReadOnly => String::from(
+            Self::MailAddonsCurrentMessageReadOnly => String::from(
                 "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
             ),
-            Usage::MailCompose => String::from("https://www.googleapis.com/auth/gmail.compose"),
-            Usage::MailInsert => String::from("https://www.googleapis.com/auth/gmail.insert"),
-            Usage::MailLabels => String::from("https://www.googleapis.com/auth/gmail.labels"),
-            Usage::MailMetaData => String::from("https://www.googleapis.com/auth/gmail.metadata"),
-            Usage::MailModify => String::from("https://www.googleapis.com/auth/gmail.modify"),
-            Usage::MailReadOnly => String::from("https://www.googleapis.com/auth/gmail.readonly"),
-            Usage::MailSend => String::from("https://www.googleapis.com/auth/gmail.send"),
-            Usage::MailSettingsBasic => {
+            Self::MailCompose => String::from("https://www.googleapis.com/auth/gmail.compose"),
+            Self::MailInsert => String::from("https://www.googleapis.com/auth/gmail.insert"),
+            Self::MailLabels => String::from("https://www.googleapis.com/auth/gmail.labels"),
+            Self::MailMetaData => String::from("https://www.googleapis.com/auth/gmail.metadata"),
+            Self::MailModify => String::from("https://www.googleapis.com/auth/gmail.modify"),
+            Self::MailReadOnly => String::from("https://www.googleapis.com/auth/gmail.readonly"),
+            Self::MailSend => String::from("https://www.googleapis.com/auth/gmail.send"),
+            Self::MailSettingsBasic => {
                 String::from("https://www.googleapis.com/auth/gmail.settings.basic")
             }
-            Usage::MailSettingsSharing => {
+            Self::MailSettingsSharing => {
                 String::from("https://www.googleapis.com/auth/gmail.settings.sharing")
             }
-            Usage::AnalyticsEdit => String::from("https://www.googleapis.com/auth/analytics.edit"),
-            Usage::AnalyticsManageUsers => {
+            Self::AnalyticsEdit => String::from("https://www.googleapis.com/auth/analytics.edit"),
+            Self::AnalyticsManageUsers => {
                 String::from("https://www.googleapis.com/auth/analytics.manage.users")
             }
-            Usage::AnalyticsManageUsersReadOnly => {
+            Self::AnalyticsManageUsersReadOnly => {
                 String::from("https://www.googleapis.com/auth/analytics.manage.users.readonly")
             }
-            Usage::AnalyticsProVision => {
+            Self::AnalyticsProVision => {
                 String::from("https://www.googleapis.com/auth/analytics.provision")
             }
-            Usage::AnalyticsUserDeletion => {
+            Self::AnalyticsUserDeletion => {
                 String::from("https://www.googleapis.com/auth/analytics.user.deletion")
             }
-            Usage::ChatDelete => String::from("https://www.googleapis.com/auth/chat.delete"),
-            Usage::ChatMemberships => {
+            Self::ChatDelete => String::from("https://www.googleapis.com/auth/chat.delete"),
+            Self::ChatMemberships => {
                 String::from("https://www.googleapis.com/auth/chat.memberships")
             }
-            Usage::ChatMembershipsApp => {
+            Self::ChatMembershipsApp => {
                 String::from("https://www.googleapis.com/auth/chat.memberships.app")
             }
-            Usage::ChatMembershipsReadOnly => {
+            Self::ChatMembershipsReadOnly => {
                 String::from("https://www.googleapis.com/auth/chat.memberships.readonly")
             }
-            Usage::ChatMessages => String::from("https://www.googleapis.com/auth/chat.messages"),
-            Usage::ChatMessagesCreate => {
+            Self::ChatMessages => String::from("https://www.googleapis.com/auth/chat.messages"),
+            Self::ChatMessagesCreate => {
                 String::from("https://www.googleapis.com/auth/chat.messages.create")
             }
-            Usage::ChatMessagesReactions => {
+            Self::ChatMessagesReactions => {
                 String::from("https://www.googleapis.com/auth/chat.messages.reactions")
             }
-            Usage::ChatMessagesReactionsCreate => {
+            Self::ChatMessagesReactionsCreate => {
                 String::from("https://www.googleapis.com/auth/chat.messages.reactions.create")
             }
-            Usage::ChatMessagesReactionsReadOnly => {
+            Self::ChatMessagesReactionsReadOnly => {
                 String::from("https://www.googleapis.com/auth/chat.messages.reactions.readonly")
             }
-            Usage::ChatMessagesReadOnly => {
+            Self::ChatMessagesReadOnly => {
                 String::from("https://www.googleapis.com/auth/chat.messages.readonly")
             }
-            Usage::ChatSpaces => String::from("https://www.googleapis.com/auth/chat.spaces"),
-            Usage::ChatSpacesCreate => {
+            Self::ChatSpaces => String::from("https://www.googleapis.com/auth/chat.spaces"),
+            Self::ChatSpacesCreate => {
                 String::from("https://www.googleapis.com/auth/chat.spaces.create")
             }
-            Usage::ChatSpacesReadOnly => {
+            Self::ChatSpacesReadOnly => {
                 String::from("https://www.googleapis.com/auth/chat.spaces.readonly")
             }
-            Usage::ClassroomAnnouncements => {
+            Self::ClassroomAnnouncements => {
                 String::from("https://www.googleapis.com/auth/classroom.announcements")
             }
-            Usage::ClassroomAnnouncementsReadOnly => {
+            Self::ClassroomAnnouncementsReadOnly => {
                 String::from("https://www.googleapis.com/auth/classroom.announcements.readonly")
             }
-            Usage::ClassroomCourses => {
+            Self::ClassroomCourses => {
                 String::from("https://www.googleapis.com/auth/classroom.courses")
             }
-            Usage::ClassroomCoursesReadOnly => {
+            Self::ClassroomCoursesReadOnly => {
                 String::from("https://www.googleapis.com/auth/classroom.courses.readonly")
             }
-            Usage::ClassroomCourseworkMe => {
+            Self::ClassroomCourseworkMe => {
                 String::from("https://www.googleapis.com/auth/classroom.coursework.me")
             }
-            Usage::ClassroomCourseworkMeReadOnly => {
+            Self::ClassroomCourseworkMeReadOnly => {
                 String::from("https://www.googleapis.com/auth/classroom.coursework.me.readonly")
             }
-            Usage::ClassroomCourseworkStudents => {
+            Self::ClassroomCourseworkStudents => {
                 String::from("https://www.googleapis.com/auth/classroom.coursework.students")
             }
-            Usage::ClassroomCourseworkStudentsReadOnly => String::from(
+            Self::ClassroomCourseworkStudentsReadOnly => String::from(
                 "https://www.googleapis.com/auth/classroom.coursework.students.readonly",
             ),
-            Usage::ClassroomCourseworkMaterials => {
+            Self::ClassroomCourseworkMaterials => {
                 String::from("https://www.googleapis.com/auth/classroom.courseworkmaterials")
             }
-            Usage::ClassroomCourseworkMaterialsReadOnly => String::from(
+            Self::ClassroomCourseworkMaterialsReadOnly => String::from(
                 "https://www.googleapis.com/auth/classroom.courseworkmaterials.readonly",
             ),
-            Usage::ClassroomGuardianLinksMeReadOnly => {
+            Self::ClassroomGuardianLinksMeReadOnly => {
                 String::from("https://www.googleapis.com/auth/classroom.guardianlinks.me.readonly")
             }
-            Usage::ClassroomGuardianLinksStudents => {
+            Self::ClassroomGuardianLinksStudents => {
                 String::from("https://www.googleapis.com/auth/classroom.guardianlinks.students")
             }
-            Usage::ClassroomGuardianLinksStudentsReadOnly => String::from(
+            Self::ClassroomGuardianLinksStudentsReadOnly => String::from(
                 "https://www.googleapis.com/auth/classroom.guardianlinks.students.readonly",
             ),
-            Usage::ClassroomProfileEmails => {
+            Self::ClassroomProfileEmails => {
                 String::from("https://www.googleapis.com/auth/classroom.profile.emails")
             }
-            Usage::ClassroomProfilePhotos => {
+            Self::ClassroomProfilePhotos => {
                 String::from("https://www.googleapis.com/auth/classroom.profile.photos")
             }
-            Usage::ClassroomPushNotifications => {
+            Self::ClassroomPushNotifications => {
                 String::from("https://www.googleapis.com/auth/classroom.push-notifications")
             }
-            Usage::ClassroomRosters => {
+            Self::ClassroomRosters => {
                 String::from("https://www.googleapis.com/auth/classroom.rosters")
             }
-            Usage::ClassroomRostersReadOnly => {
+            Self::ClassroomRostersReadOnly => {
                 String::from("https://www.googleapis.com/auth/classroom.rosters.readonly")
             }
-            Usage::ClassroomStudentSubmissionsMeReadOnly => String::from(
+            Self::ClassroomStudentSubmissionsMeReadOnly => String::from(
                 "https://www.googleapis.com/auth/classroom.student-submissions.me.readonly",
             ),
-            Usage::ClassroomStudentSubmissionsStudentsReadOnly => String::from(
+            Self::ClassroomStudentSubmissionsStudentsReadOnly => String::from(
                 "https://www.googleapis.com/auth/classroom.student-submissions.students.readonly",
             ),
-            Usage::ClassroomTopics => {
+            Self::ClassroomTopics => {
                 String::from("https://www.googleapis.com/auth/classroom.topics")
             }
-            Usage::ClassroomTopicsReadOnly => {
+            Self::ClassroomTopicsReadOnly => {
                 String::from("https://www.googleapis.com/auth/classroom.topics.readonly")
             }
-            Usage::DocumentsReadOnly => {
+            Self::DocumentsReadOnly => {
                 String::from("https://www.googleapis.com/auth/documents.readonly")
             }
-            Usage::DriveMetaData => String::from("https://www.googleapis.com/auth/drive.metadata"),
-            Usage::DriveMetaDataReadOnly => {
+            Self::DriveMetaData => String::from("https://www.googleapis.com/auth/drive.metadata"),
+            Self::DriveMetaDataReadOnly => {
                 String::from("https://www.googleapis.com/auth/drive.metadata.readonly")
             }
-            Usage::DrivePhotosReadOnly => {
+            Self::DrivePhotosReadOnly => {
                 String::from("https://www.googleapis.com/auth/drive.photos.readonly")
             }
-            Usage::DriveScripts => String::from("https://www.googleapis.com/auth/drive.scripts"),
-            Usage::AndroidEnterprise => {
+            Self::DriveScripts => String::from("https://www.googleapis.com/auth/drive.scripts"),
+            Self::AndroidEnterprise => {
                 String::from("https://www.googleapis.com/auth/androidenterprise")
             }
-            Usage::DriveAppData => String::from("https://www.googleapis.com/auth/drive.appdata"),
-            Usage::Games => String::from("https://www.googleapis.com/auth/games"),
-            Usage::AndroidPublisher => {
+            Self::DriveAppData => String::from("https://www.googleapis.com/auth/drive.appdata"),
+            Self::Games => String::from("https://www.googleapis.com/auth/games"),
+            Self::AndroidPublisher => {
                 String::from("https://www.googleapis.com/auth/androidpublisher")
             }
-            Usage::Webmasters => String::from("https://www.googleapis.com/auth/webmasters"),
-            Usage::WebmastersReadOnly => {
+            Self::Webmasters => String::from("https://www.googleapis.com/auth/webmasters"),
+            Self::WebmastersReadOnly => {
                 String::from("https://www.googleapis.com/auth/webmasters.readonly")
             }
-            Usage::SiteVerification => {
+            Self::SiteVerification => {
                 String::from("https://www.googleapis.com/auth/siteverification")
             }
-            Usage::SiteVerificationVerifyOnly => {
+            Self::SiteVerificationVerifyOnly => {
                 String::from("https://www.googleapis.com/auth/siteverification.verify_only")
             }
-            Usage::DriveFile => String::from("https://www.googleapis.com/auth/drive.file"),
-            Usage::DriveReadOnly => String::from("https://www.googleapis.com/auth/drive.readonly"),
-            Usage::Presentations => String::from("https://www.googleapis.com/auth/presentations"),
-            Usage::PresentationsReadOnly => {
+            Self::DriveFile => String::from("https://www.googleapis.com/auth/drive.file"),
+            Self::DriveReadOnly => String::from("https://www.googleapis.com/auth/drive.readonly"),
+            Self::Presentations => String::from("https://www.googleapis.com/auth/presentations"),
+            Self::PresentationsReadOnly => {
                 String::from("https://www.googleapis.com/auth/presentations.readonly")
             }
-            Usage::SpreadsheetsReadOnly => {
+            Self::SpreadsheetsReadOnly => {
                 String::from("https://www.googleapis.com/auth/spreadsheets.readonly")
             }
-            Usage::Tasks => String::from("https://www.googleapis.com/auth/tasks"),
-            Usage::TasksReadOnly => String::from("https://www.googleapis.com/auth/tasks.readonly"),
-            Usage::EDiscovery => String::from("https://www.googleapis.com/auth/ediscovery"),
-            Usage::EDiscoveryReadOnly => {
+            Self::Tasks => String::from("https://www.googleapis.com/auth/tasks"),
+            Self::TasksReadOnly => String::from("https://www.googleapis.com/auth/tasks.readonly"),
+            Self::EDiscovery => String::from("https://www.googleapis.com/auth/ediscovery"),
+            Self::EDiscoveryReadOnly => {
                 String::from("https://www.googleapis.com/auth/ediscovery.readonly")
             }
-            Usage::AppsAlerts => String::from("https://www.googleapis.com/auth/apps.alerts"),
-            Usage::AppsOrder => String::from("https://www.googleapis.com/auth/apps.order"),
-            Usage::AppsOrderReadOnly => {
+            Self::AppsAlerts => String::from("https://www.googleapis.com/auth/apps.alerts"),
+            Self::AppsOrder => String::from("https://www.googleapis.com/auth/apps.order"),
+            Self::AppsOrderReadOnly => {
                 String::from("https://www.googleapis.com/auth/apps.order.readonly")
             }
-            Usage::AppsGroupsMigration => {
+            Self::AppsGroupsMigration => {
                 String::from("https://www.googleapis.com/auth/apps.groups.migration")
             }
-            Usage::AppsGroupsSettings => {
+            Self::AppsGroupsSettings => {
                 String::from("https://www.googleapis.com/auth/apps.groups.settings")
             }
-            Usage::Indexing => String::from("https://www.googleapis.com/auth/indexing"),
-            Usage::ManufacturerCenter => {
+            Self::Indexing => String::from("https://www.googleapis.com/auth/indexing"),
+            Self::ManufacturerCenter => {
                 String::from("https://www.googleapis.com/auth/manufacturercenter")
             }
-            Usage::ContactsOtherReadOnly => {
+            Self::ContactsOtherReadOnly => {
                 String::from("https://www.googleapis.com/auth/contacts.other.readonly")
             }
-            Usage::ContactsReadOnly => {
+            Self::ContactsReadOnly => {
                 String::from("https://www.googleapis.com/auth/contacts.readonly")
             }
-            Usage::DirectoryReadOnly => {
+            Self::DirectoryReadOnly => {
                 String::from("https://www.googleapis.com/auth/directory.readonly")
             }
-            Usage::UserAddressesRead => {
+            Self::UserAddressesRead => {
                 String::from("https://www.googleapis.com/auth/user.addresses.read")
             }
-            Usage::UserBirthdayRead => {
+            Self::UserBirthdayRead => {
                 String::from("https://www.googleapis.com/auth/user.birthday.read")
             }
-            Usage::UserEmailsRead => {
+            Self::UserEmailsRead => {
                 String::from("https://www.googleapis.com/auth/user.emails.read")
             }
-            Usage::UserGenderRead => {
+            Self::UserGenderRead => {
                 String::from("https://www.googleapis.com/auth/user.gender.read")
             }
-            Usage::UserOrganizationRead => {
+            Self::UserOrganizationRead => {
                 String::from("https://www.googleapis.com/auth/user.organization.read")
             }
-            Usage::UserPhoneNumbersRead => {
+            Self::UserPhoneNumbersRead => {
                 String::from("https://www.googleapis.com/auth/user.phonenumbers.read")
             }
-            Usage::UserInfoProfile => {
+            Self::UserInfoProfile => {
                 String::from("https://www.googleapis.com/auth/userinfo.profile")
             }
-            Usage::PhotosLibrary => String::from("https://www.googleapis.com/auth/photoslibrary"),
-            Usage::PhotosLibraryAppendOnly => {
+            Self::PhotosLibrary => String::from("https://www.googleapis.com/auth/photoslibrary"),
+            Self::PhotosLibraryAppendOnly => {
                 String::from("https://www.googleapis.com/auth/photoslibrary.appendonly")
             }
-            Usage::PhotosLibraryEditAppCreatedData => {
+            Self::PhotosLibraryEditAppCreatedData => {
                 String::from("https://www.googleapis.com/auth/photoslibrary.edit.appcreateddata")
             }
-            Usage::PhotosLibraryReadOnly => {
+            Self::PhotosLibraryReadOnly => {
                 String::from("https://www.googleapis.com/auth/photoslibrary.readonly")
             }
-            Usage::PhotosLibraryReadOnlyAppCreatedData => String::from(
+            Self::PhotosLibraryReadOnlyAppCreatedData => String::from(
                 "https://www.googleapis.com/auth/photoslibrary.readonly.appcreateddata",
             ),
-            Usage::PhotosLibrarySharing => {
+            Self::PhotosLibrarySharing => {
                 String::from("https://www.googleapis.com/auth/photoslibrary.sharing")
             }
-            Usage::SasPortal => String::from("https://www.googleapis.com/auth/sasportal"),
-            Usage::DoubleClickSearch => {
+            Self::SasPortal => String::from("https://www.googleapis.com/auth/sasportal"),
+            Self::DoubleClickSearch => {
                 String::from("https://www.googleapis.com/auth/doubleclicksearch")
             }
-            Usage::ServiceManagementReadOnly => {
+            Self::ServiceManagementReadOnly => {
                 String::from("https://www.googleapis.com/auth/service.management.readonly")
             }
-            Usage::ServiceManagement => {
+            Self::ServiceManagement => {
                 String::from("https://www.googleapis.com/auth/service.management")
             }
-            Usage::StreetViewPublish => {
+            Self::StreetViewPublish => {
                 String::from("https://www.googleapis.com/auth/streetviewpublish")
             }
-            Usage::TagManagerDeleteContainers => {
+            Self::TagManagerDeleteContainers => {
                 String::from("https://www.googleapis.com/auth/tagmanager.delete.containers")
             }
-            Usage::TagManagerEditContainers => {
+            Self::TagManagerEditContainers => {
                 String::from("https://www.googleapis.com/auth/tagmanager.edit.containers")
             }
-            Usage::TagManagerEditContainerVersions => {
+            Self::TagManagerEditContainerVersions => {
                 String::from("https://www.googleapis.com/auth/tagmanager.edit.containerversions")
             }
-            Usage::TagManagerManageAccounts => {
+            Self::TagManagerManageAccounts => {
                 String::from("https://www.googleapis.com/auth/tagmanager.manage.accounts")
             }
-            Usage::TagManagerManageUsers => {
+            Self::TagManagerManageUsers => {
                 String::from("https://www.googleapis.com/auth/tagmanager.manage.users")
             }
-            Usage::TagManagerPublish => {
+            Self::TagManagerPublish => {
                 String::from("https://www.googleapis.com/auth/tagmanager.publish")
             }
-            Usage::TagManagerReadOnly => {
+            Self::TagManagerReadOnly => {
                 String::from("https://www.googleapis.com/auth/tagmanager.readonly")
             }
-            Usage::Youtube => String::from("https://www.googleapis.com/auth/youtube"),
-            Usage::YoutubeChannelMembershipsCreator => {
+            Self::Youtube => String::from("https://www.googleapis.com/auth/youtube"),
+            Self::YoutubeChannelMembershipsCreator => {
                 String::from("https://www.googleapis.com/auth/youtube.channel-memberships.creator")
             }
-            Usage::YouTubeForceSsl => {
+            Self::YouTubeForceSsl => {
                 String::from("https://www.googleapis.com/auth/youtube.force-ssl")
             }
-            Usage::YoutubeReadOnly => {
+            Self::YoutubeReadOnly => {
                 String::from("https://www.googleapis.com/auth/youtube.readonly")
             }
-            Usage::YoutubeUpload => String::from("https://www.googleapis.com/auth/youtube.upload"),
-            Usage::YoutubePartner => String::from("https://www.googleapis.com/auth/youtubepartner"),
-            Usage::YoutubePartnerChannelAudit => {
+            Self::YoutubeUpload => String::from("https://www.googleapis.com/auth/youtube.upload"),
+            Self::YoutubePartner => String::from("https://www.googleapis.com/auth/youtubepartner"),
+            Self::YoutubePartnerChannelAudit => {
                 String::from("https://www.googleapis.com/auth/youtubepartner-channel-audit")
             }
-            Usage::YoutubeAnalyticsMonetaryReadOnly => {
+            Self::YoutubeAnalyticsMonetaryReadOnly => {
                 String::from("https://www.googleapis.com/auth/yt-analytics-monetary.readonly")
             }
-            Usage::YoutubeAnalyticsReadOnly => {
+            Self::YoutubeAnalyticsReadOnly => {
                 String::from("https://www.googleapis.com/auth/yt-analytics.readonly")
             }
-            Usage::Email => String::from("email"),
-            Usage::OpenId => String::from("openid"),
-            Usage::Profile => String::from("profile"),
+            Self::Email => String::from("email"),
+            Self::OpenId => String::from("openid"),
+            Self::Profile => String::from("profile"),
         }
     }
 }
