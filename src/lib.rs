@@ -83,7 +83,7 @@ impl AuthConfig {
     /// This value should be between 30 and 3600 Seconds.
     /// Inputs out of this ranged will not be accepted.
     /// # Errors
-    /// See [`ErrorKind`] for a more detailed answer.
+    /// See [`Error`] for a more detailed answer.
     /// # Returns
     /// The above mentioned jwt as String.
     pub fn build(service_account_json_str: &str, usage: &Usage) -> Result<Self> {
@@ -100,7 +100,7 @@ impl AuthConfig {
     /// With the provided jwt token, an authentication token (short: `auth_token`) will be requested from google.
     /// This `auth_token` will be returned and is used for requesting several google api services.
     /// # Errors
-    /// See [`ErrorKind`] for a more detailed answer.
+    /// See [`Error`] for a more detailed answer.
     /// # Returns
     /// The above mentioned `auth_token` as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
