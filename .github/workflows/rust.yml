@@ -2,7 +2,7 @@ name: Build-Rust
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "errors" ]
   pull_request:
     branches: [ "main" ]
 
