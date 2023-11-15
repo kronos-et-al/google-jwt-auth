@@ -56,9 +56,10 @@ jobs:
       - name: Prepare secret files
         run: |
           echo "$GOOGLE_CLIENT_JSON_BASE64" >> secret1.base64
-          base64 --decode secret1.base64 > client-json.json
+          base64 --decode secret1.base64 > test-client.json
+          mv test-client.json tests
           echo "$GOOGLE_CLIENT_JSON_OLD_BASE64" >> secret2.base64
-          base64 --decode secret2.base64 > client-json-old.json
-          ls -l
+          base64 --decode secret2.base64 > test-client-old.json
+          mv test-client-old.json tests
       - name: Run tests
         run: cargo test --verbose
