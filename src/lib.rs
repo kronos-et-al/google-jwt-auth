@@ -1,15 +1,34 @@
+#![forbid(unsafe_code)]
+#![warn(
+missing_docs,
+unreachable_pub,
+unused_crate_dependencies,
+clippy::pedantic,
+clippy::nursery,
+clippy::unwrap_used,
+clippy::dbg_macro,
+clippy::todo
+)]
+#![allow(clippy::module_name_repetitions)]
+
+//!
+
 use crate::error::{Result, TokenGenerationError};
 use crate::json_structs::{Claims, GoogleResponse, ServiceAccountInfoJson};
 
 use crate::error::TokenGenerationError::InvalidLifetime;
 use jsonwebtoken::{Algorithm, EncodingKey, Header};
 
+/// This module contains all error types and meanings.
 pub mod error;
+/// This module contains all library structs, that are used to create data requests.
 pub mod json_structs;
 
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
+/// This struct contains all necessary information to request an authentication token from google.
+/// This structure is intended to be reused by the client for several token generation requests.
 pub struct AuthConfig {
     header: Header,
     iss: String,
@@ -72,7 +91,7 @@ impl AuthConfig {
             self.aud.clone(),
             lifetime,
         );
-        let assertion = self.sign(claims)?;
+        let assertion = self.sign(&claims)?;
 
         let params = format!("grant_type={GRANT_TYPE}&assertion={assertion}");
         let resp = reqwest::Client::new()
@@ -96,14 +115,15 @@ impl AuthConfig {
         }
     }
 
-    fn sign(&self, claims: Claims) -> Result<String> {
+    fn sign(&self, claims: &Claims) -> Result<String> {
         let key = EncodingKey::from_rsa_pem(self.private_key.as_bytes())?;
-        Ok(jsonwebtoken::encode::<Claims>(&self.header, &claims, &key)?)
+        Ok(jsonwebtoken::encode::<Claims>(&self.header, claims, &key)?)
     }
 }
 
 #[cfg(test)]
 mod tests {
+    #![allow(clippy::unwrap_used)]
     use super::*;
     use std::fs;
 
