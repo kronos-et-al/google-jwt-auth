@@ -1,3 +1,28 @@
+//! Crate google-jwt-auth
+//!
+//! This crate provides the functionality to create authentication tokens for google requests.
+//!
+//! # Two easy steps to obtain a token:
+//! 1. Create an [`AuthConfig`] instance with [`AuthConfig::build()`]
+//! 2. Generate a token with [`AuthConfig::generate_auth_token()`]
+//!
+//! # Example
+//! ```
+//! use google_jwt_auth::AuthConfig;
+//! use google_jwt_auth::usage::Usage;
+//!
+//! // Step one: Create AuthConfig
+//! let client_json = std::fs::read_to_string("tests/test-client.json").unwrap();
+//! let usage = Usage::CloudVision;
+//!
+//! let config = AuthConfig::build(client_json, usage).unwrap();
+//!
+//! // Step two: Generate token
+//! let lifetime = 3600_i64;
+//! let token_response = config.generate_auth_token(lifetime);
+//! ```
+//! After awaiting the token_response the result can be obtained.
+
 use crate::error::{Result, TokenGenerationError};
 use crate::json_structs::{Claims, GoogleResponse, ServiceAccountInfoJson};
 
@@ -48,7 +73,7 @@ impl AuthConfig {
         Ok(Self {
             header: Header::new(Algorithm::RS256),
             iss: account_info.client_email,
-            scope: usage.as_str(),
+            scope: usage.as_string(),
             aud: account_info.token_uri,
             private_key: account_info.private_key,
         })
