@@ -16,14 +16,15 @@ This json file is important and necessary to use this crate. See in Examples/Usa
 
 Each token request has a lifetime. This lifetime need to be provided as param in seconds. Allowed are values between 30 to 3600.
 
-## Current Version: 0.0.1 (ALPHA)
+## Current Version: 0.1.1 (BETA)
+## Current State: Stable!
 ## To be done
 
 The next updates take care of the following:
 
 * [X] Improved error messages
 * [X] Detect error returns
-* [ ] Usage Enum Types
+* [X] Usage Enum Types
 * [ ] Token-Buffer (for now: every token generation results in a rest request)
 
 ## Example / Usage
@@ -32,7 +33,7 @@ The next updates take care of the following:
 ...
 let config = AuthConfig::build(                                     //<-- Config can be reused
     fs::read_to_string("service_account.json").unwrap(),            //<-- JSON as string
-    String::from("https://www.googleapis.com/auth/cloud-vision"),   //<-- Api-Usage
+    &Usage::CloudVision,                                            //<-- Api-Usage
 ).unwrap(); 
 let token = config.generate_auth_token(3600).await.unwrap();        //<-- Generate token
 println!("{}", token);
