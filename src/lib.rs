@@ -13,7 +13,7 @@
 
 //! Crate google-jwt-auth
 //!
-//! This crate provides the functionality to create authentication tokens for google requests.
+//! This crate provides the functionality to create authentication tokens for Google requests.
 //!
 //! # Two easy steps to obtain a token:
 //! 1. Create an [`AuthConfig`] instance with [`AuthConfig::build()`]
@@ -54,7 +54,7 @@ pub type Error = TokenGenerationError;
 static GRANT_TYPE: &str = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 static CONTENT_TYPE: &str = "application/x-www-form-urlencoded";
 
-/// This struct contains all necessary information to request an authentication token from google.
+/// This struct contains all necessary information to request an authentication token from Google.
 /// This structure is intended to be reused by the client for several token generation requests.
 pub struct AuthConfig {
     header: Header,
@@ -65,11 +65,11 @@ pub struct AuthConfig {
 }
 
 impl AuthConfig {
-    /// This function generates an auth configuration with the provided information. A this config is used to request `auth_tokens`.
-    /// This function generates only tokens with the RS256 encryption like the google jwt authentication service does.
+    /// This function generates an auth configuration with the provided information. A config is used to request `auth_tokens`.
+    /// This function generates only tokens with the RS256 encryption like the Google jwt authentication service does.
     /// # Params
     /// **`service_account_json_str`: String**<br>
-    /// Each google service account has a json file that can be downloaded in the google console during the key generation.
+    /// Each google service account has a json file that can be downloaded in the Google console during the key generation.
     /// This json file cannot be downloaded twice! A new key must be generated, if the file gets lost!
     /// The content of this file needs to be provided by this param as string.
     ///
@@ -85,7 +85,7 @@ impl AuthConfig {
     /// # Errors
     /// See [`Error`] for a more detailed answer.
     /// # Returns
-    /// The above mentioned jwt as String.
+    /// The above-mentioned jwt as String.
     pub fn build(service_account_json_str: &str, usage: &Usage) -> Result<Self> {
         let account_info: ServiceAccountInfoJson = serde_json::from_str(service_account_json_str)?;
         Ok(Self {
@@ -97,12 +97,12 @@ impl AuthConfig {
         })
     }
 
-    /// With the provided jwt token, an authentication token (short: `auth_token`) will be requested from google.
+    /// With the provided jwt token, an authentication token (short: `auth_token`) will be requested from Google.
     /// This `auth_token` will be returned and is used for requesting several google api services.
     /// # Errors
     /// See [`Error`] for a more detailed answer.
     /// # Returns
-    /// The above mentioned `auth_token` as String.
+    /// The above-mentioned `auth_token` as String.
     pub async fn generate_auth_token(&self, lifetime: i64) -> Result<String> {
         if !(30..=3600).contains(&lifetime) {
             return Err(Error::InvalidLifetime(lifetime));
@@ -154,7 +154,7 @@ mod tests {
     async fn test_generate_auth_token() {
         let valid_config = get_valid_config_complete();
 
-        // The following config depends on an deleted service account key.
+        // The following config depends on a deleted service account key.
         // It is no longer possible to create tokens with this info.
         let invalid_config = AuthConfig::build(
             &fs::read_to_string("tests/test-client-old.json").unwrap(),

@@ -9,7 +9,7 @@ pub enum TokenGenerationError {
     /// Invalid lifetime
     #[error("The provided lifetime '{0}' is out of range 30..3600.")]
     InvalidLifetime(i64),
-    /// JsonWebToken library error
+    /// `JsonWebToken` library error
     #[error("JsonWebTokenError occurred: {0}")]
     JsonWebTokenError(#[from] jsonwebtoken::errors::Error),
     /// Reqwest library error

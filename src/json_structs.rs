@@ -50,7 +50,7 @@ impl Claims {
 ///     "universe_domain": "googleapis.com"
 /// }
 /// ```
-/// This JSON can be downloaded in the google console service account section during the key generation.
+/// This JSON can be downloaded in the Google console service account section during the key generation.
 /// This JSON cannot be downloaded twice! A new key must be generated, if the file gets lost!
 #[allow(clippy::nursery)]
 #[derive(Serialize, Deserialize, Debug)]
@@ -65,28 +65,21 @@ pub(crate) struct ServiceAccountInfoJson {
     pub(crate) client_x509_cert_url: String,
 }
 
-/// Contains all possible response structures for the google authentication service.
+/// Contains all possible response structures for the Google authentication service.
 /// See [`ValidResponse`] and [`ErrorResponse`] for more details.
 #[allow(clippy::nursery)]
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(untagged)]
 pub(crate) enum GoogleResponse {
-    ///
     ValidResponse {
         // Todo merge with ValidResponse struct
-        ///
         access_token: String,
-        ///
         expires_in: i16,
-        ///
         token_type: String,
     },
-    ///
     ErrorResponse {
         // Todo merge with ErrorResponse struct
-        ///
         error: String,
-        ///
         error_description: String,
     },
 }
