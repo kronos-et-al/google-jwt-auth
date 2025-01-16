@@ -1,3 +1,5 @@
+#![allow(clippy::doc_markdown)]
+
 use std::fmt::{Display, Formatter};
 
 /// This enum contains all usage types defined by google (late 2023).
