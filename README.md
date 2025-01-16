@@ -10,13 +10,13 @@ To obtain a token, some tasks need to be done:
 - Access to (create) a Google service account.
 - Rights to create a key for that service account.
 - Access to the json key file (can be downloaded during the service account key generation).
-- Select the needed api usage from this [Website](https://developers.google.com/identity/protocols/oauth2/scopes?hl=en). More than one usage can be used by seperating them with commas. An empty usage results in an error.
+- Select the needed api usage from this [Website](https://developers.google.com/identity/protocols/oauth2/scopes?hl=en). More than one usage can be used by separating them with commas. An empty usage results in an error.
 
 This json file is important and necessary to use this crate. See in Examples/Usage its usage.
 
-Each token request has a lifetime. This lifetime need to be provided as param in seconds. Allowed are values between 30 to 3600.
+Each token request has a lifetime. This lifetime need to be provided as param in seconds. Allowed values are between 30 and 3600.
 
-## Current Version: 0.1.1 (BETA)
+## Current Version: 0.2.1 (BETA)
 ## Current State: Stable!
 ## To be done
 
